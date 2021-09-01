@@ -157,11 +157,7 @@ def continuing_point(path, first_time=False):
     # add icon and presplash files here
     added_once = [False, False]
     icon_field = buildozer_conf.get_attributes("icon.filename", False)[0]
-    if icon_field[-14:] != "/data/icon.png" and "s/Images/icon." in icon_field:
-        added_once[0] = True
     presplash_field = buildozer_conf.get_attributes("presplash.filename", False)[0]
-    if presplash_field[-19:] != "/data/presplash.png" and "s/Images/presplash." in presplash_field:
-        added_once[1] = True
     for i in os.listdir(f"{path}/Images"):
         if i[:5] == "icon." and not added_once[0]:
             if icon_field[-14:] != "/data/icon.png" and f"s/Images/{i}" in icon_field:
