@@ -1,0 +1,97 @@
+{{start_screenmanager}}
+#: import slide kivy.uix.screenmanager.SlideTransition
+#: import C kivy.properties.get_color_from_hex
+
+<Main_widget>:
+    transition: slide(duration= 0.5)
+    Screen:
+        name: "screen_1"
+        FloatLayout:
+            spacing:"10sp" # sp scale is better for different devices
+            padding: "10sp"
+            Label: # not complete
+                pos_hint: {"x":0,"top":1}
+                size_hint: (0.9, 0.35)
+                text: " Welcome"
+                font_size: "40sp"
+
+            Button:
+                pos_hint: {"x":0.9,"top":1}
+                size_hint: (0.1, 0.35)
+                font_name: "shapes"
+                font_size: "40sp"
+                text: "\u003e"
+                on_press: root.current = "screen_2"
+
+            TextInput:
+                pos_hint: {"x":0,"top":0.65}
+                size_hint: (1, 0.15)
+                id: text_input
+                hint_text: "Hello world"
+                halign:"center"
+                font_size: "40sp"
+                font_name: "fonts"
+
+            Label:
+                pos_hint: {"x":0,"top":0.5}
+                size_hint: (1, 0.2)
+                text: text_input.text
+                color: (1,1,0)
+                font_size: "40sp"
+
+            Button:
+                pos_hint: {"x":0,"top":0.3}
+                size_hint: (1, 0.3)
+                font_size: "40sp"
+                text: "popup screen"
+                on_press: root.warning_popup(text_input.text if text_input.text else text_input.hint_text)
+
+
+    Screen:
+        name: "screen_2"
+        BoxLayout:
+            orientation: 'vertical'
+            padding: "10sp"
+            spacing: "10sp"
+            Button:
+                font_name: "shapes"
+                font_size: "40sp"
+                text: "\u003c"
+                on_press: root.current = "screen_1"
+            Button:
+                font_size: "40sp"
+                text: "test notifications"
+                on_press: root.notify()
+
+
+
+{{end_screenmanager}}
+
+{{strat_widget}}
+#: import C kivy.properties.get_color_from_hex
+<Main_widget>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing:"10sp"
+        padding: "10sp"
+        Label:
+            text: " Welcome {user_name.title()}"
+            font_size: "40sp"
+            font_name: "fonts"
+
+        TextInput:
+            id: text_input
+            hint_text: "Hello world"
+            halign:"center"
+            font_size: "40sp"
+            font_name: "fonts"
+
+        Button:
+            font_size: "40sp"
+            font_name: "fonts"
+            text: "popup screen"
+            on_press: root.warning_popup(text_input.text if text_input.text else text_input.hint_text)
+
+
+
+{{end_widget}}

@@ -1,0 +1,68 @@
+# ! /usr/bin/env python3
+from kivy.app import App
+{}
+from kivy.uix.button import Button
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+from kivy.uix.boxlayout import BoxLayout
+from kivy import Config
+from kivy.core.text import LabelBase
+# to use android functions like notifications, flash, battery and sensors >> use plyer module
+from plyer import notification, audio
+# audio.file_path = "Music/pristine-609.ogg" # only for android
+
+# asking user to open microphone (example) (make it in final step)
+# from android.permissions import request_permissions, Permission
+# request_permissions([Permission.RECORD_AUDIO, Permission.NOTIFICATION])
+
+
+class Main_widget({}):
+    def __init__(self, app, **kwargs):
+        super().__init__(**kwargs)
+        # to access {name}App class
+        self.app = app
+
+    def warning_popup(self, text,title="Warning"):
+        box = BoxLayout(orientation="vertical", spacing=10, padding=10)
+        button = Button(text="okay", size_hint_y=0.3,
+                        font_size="20sp")
+        box.add_widget(Label(text="", size_hint_y=0.1))
+        box.add_widget(
+            Label(text=text,
+                  size_hint_y=0.3,
+                  font_size="20sp"))
+        box.add_widget(button)
+        popup = Popup(title=title, content=box,
+                      size_hint=(0.75, 0.35))
+        popup.open()
+        button.bind(on_release=popup.dismiss)
+
+
+    def notify(title="Notification", message = "notification message", timeout = 5):
+        # notification.notify(title = title, message=message,timeout=timeout,app_icon="Images/icon.png",app_name="NOTIFICATION",ticker = "1")
+        # use notification with
+        # audio.start()  #only for android
+
+
+class {name}App(App):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)    
+
+    def build(self):
+        widget = Main_widget(self)
+        return widget
+
+if __name__ == "__main__":
+    # adding fonts, you can call them using font_name property.
+    LabelBase.register('fonts', 'Fonts/ArialUnicodeMS.ttf')
+    LabelBase.register("shapes", "Fonts/modernpics.otf")
+
+    # to adjust the app when the keyboard rises
+    from kivy.core.window import Window
+
+    Window.keyboard_anim_args = {rise_keyboard}
+    Window.softinput_mode = "below_target"
+    # to add a color in the background of the app.
+    Window.clearcolor = (169.0 / 255, 172.0 / 255, 175.0 / 255, 0)
+    {name}App().run()
+
