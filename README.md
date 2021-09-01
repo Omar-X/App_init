@@ -1,5 +1,5 @@
 # App_init
-helping tool that initialize and check your android project (python/kivy).
+Helping tool that initialize and check your android project (python/kivy).
 
 Only for linux platforms
 buildozer tool is used. 
