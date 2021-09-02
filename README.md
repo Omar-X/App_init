@@ -18,7 +18,7 @@ licenced bt MIT licence.
 
 =======================================================================================
  
-an video to about it, link: https://youtu.be/_fIFH23EuAM
+a video about it, link: https://youtu.be/_fIFH23EuAM
 
 
 
