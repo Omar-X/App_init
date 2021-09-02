@@ -42,6 +42,7 @@ class Main_widget({}):
         # notification.notify(title = title, message=message,timeout=timeout,app_icon="Images/icon.png",app_name="NOTIFICATION",ticker = "1")
         # use notification with
         # audio.start()  #only for android
+        pass
 
 
 class {name}App(App):
