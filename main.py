@@ -320,7 +320,7 @@ def building_kivy(name, option, path):
                 end = main_text.find("{{end_screenmanager}}")
             else:
                 start = main_text.find("{{start_widget}}") + 16
-                end = "{{end_widget}}"
+                end = main_text.find("{{end_widget}}")
             kivy_file.write(main_text[start:end])
 
         else:
