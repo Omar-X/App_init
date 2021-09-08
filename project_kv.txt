@@ -72,10 +72,14 @@
 <Main_widget>:
     BoxLayout:
         orientation: 'vertical'
+        x:0
+        y:0
+        width: root.width
+        height:root.height
         spacing:"10sp"
         padding: "10sp"
         Label:
-            text: " Welcome {user_name.title()}"
+            text: " Welcome"
             font_size: "40sp"
             font_name: "fonts"
 
