@@ -187,7 +187,7 @@ def run_project(path):
     request_dict = {
         "1": "buildozer -v android debug",
         "2": "buildozer android deploy run logcat",
-        "3": "buildozer clean",
+        "3": "buildozer android clean",
         "4": "python3 main.py"
                     }
     while True:
