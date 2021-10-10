@@ -1,6 +1,7 @@
 import os, sys, main
 from display import *
 import soundfile
+False_Entry=False
 
 system = sys.platform.lower()
 if system != "linux":
@@ -10,13 +11,14 @@ if system != "linux":
 
 def main_func(argv, path=None):
     # building up a project
-    if argv not in ["start", "Start", "continue", "Continue", "Run", "run"]:
+    if argv not in ["start", "Start", "continue", "Continue", "Run", "run"] and not False_Entry:
         path = "path" + "/" + "<new project name>"
         if argv.find("help") == -1 or argv.find("-h") == -1:
+            False_Entry = True
             fail_print("Wrong entry")
             warning_print("Use one of these options > start, continue, run")
             normal_print("Example > it should be like")
-        print(bcolors.HEADER + "Python3 start " + path + bcolors.ENDC)
+        print(bcolors.HEADER + "Python3 App_init start " + path + bcolors.ENDC)
         sys.exit()
 
     elif argv == "start" or argv == "Start":
@@ -55,6 +57,20 @@ def main_func(argv, path=None):
                 warning_print("Path does not exist try again.")
                 path = input("Folder path: ")
                 continue
+    normal_print("Checking kivy module ...")
+    try:
+        requirement = (os.popen(f"pip3 show kivy").readlines())[-2]
+        head_print("kivy module found.")
+    except:
+        normal_print("Kivy is mandatory for your App")
+        request = True if (quest_input("press 'y' to install kivy module"
+                                                 " to continue\n: ") in ['y', "Y"]) else False
+        if request:
+            normal_print("Installing kivy ...")
+            os.system("pip3 install kivy")
+            head_print("KIVY installed.")
+        else:
+            sys.exit()
 
     main.Builder.title = os.path.basename(path)
     main.Builder.path = path
@@ -63,5 +79,19 @@ def main_func(argv, path=None):
 
 
 if __name__ == "__main__":
-    main_func(sys.argv[1], sys.argv[2])
+    try:
+        main_func(sys.argv[1], sys.argv[2])
+    except Exception as error:
+        if str(error) not in ["local variable 'False_Entry' referenced before assignment", "list index out of range"]:
+            fail_print(error)
+        else:
+            if not False_Entry:
+                False_Entry = True
+                fail_print("Wrong entry")
+                warning_print("Use one of these options > start, continue, run")
+                normal_print("Example > it should be like")
+                path = "path" + "/" + "<new project name>"
+                print(bcolors.HEADER + "Python3 App_init start " + path + bcolors.ENDC)
+                sys.exit()
+
 # import main
