@@ -79,8 +79,48 @@ def starting_point(path):
         normal_print(f"Building {project_name}.kv file")
         building_kivy(project_name, option, path)
         # adding important files images and fonts
+        # checking android.api, min.api
+        android_api = "27"
+        min_api = "21"
+        request = True if (quest_input(f"Target Android API: {android_api}\nMinimum API: {min_api}\nPress e/E to edit them or Enter to Continue: ") in ["e", "E"]) else False
+        if request:
+            checker = [False, False]
+            for i in range(10):
+
+                if i != 0:
+                    warning_print("Wrong entry try again")                
+
+                if i == 0:
+                    normal_print("Target Android API, should be as high as possible.")
+                if not checker[0]:
+                    android_api = quest_input("Enter Target Android API: ") 
+                if not android_api.isdigit():
+                    continue
+                else:
+                    checker[0] = True
+
+                if i == 0:
+                    normal_print("Minimum API your APK will support.")
+                if not checker[1]:
+                    min_api = quest_input("Minimum API: ")
+                if not min_api.isdigit():
+                    continue
+                else:
+                    checker[1] = True
+                if checker[0] and checker[1]:
+                    if int(android_api) >= int(min_api): 
+                        break
+                    else:
+                        warning_print("Target Android API must be bigger than Minimum API")
+                        checker = [False, False]
+
+        buildozer_conf = Buildozer_init(path)
+        buildozer_conf.add_to("android.api",android_api if android_api.isdigit() else "27",True)
+        buildozer_conf.add_to("android.minapi",min_api if min_api.isdigit() else "21",True)
+        head_print("Target Android API and Minimum API are added to buildozer.spec .")
+        
         continuing_point(path, True)
-        # you forgot to add icon and presplash files
+
         ask = quest_input("Run main.py on your PC ? ['y'/'n']: ")
         if ask in ["Y", "y", "yes", "Yes"]:
             os.system(f"cd {path}" + " ; " + "python3 main.py")
@@ -154,23 +194,26 @@ def continuing_point(path, first_time=False):
             modules.update(get_modules(file))
         buildozer_conf.add_to("requirements", modules)
 
+    # editing logcat section
+    normal_print("perparing logcat in buildozer ...")
+    buildozer_conf.add_to("android.logcat_filters","*:S python:D",True)
+    head_print("logcat is prepared.")
+
     # add icon and presplash files here
     added_once = [False, False]
     icon_field = buildozer_conf.get_attributes("icon.filename", False)[0]
+    if icon_field[-14:] != "/data/icon.png" and "s/Images/icon." in icon_field:
+        added_once[0] = True
     presplash_field = buildozer_conf.get_attributes("presplash.filename", False)[0]
+    if presplash_field[-19:] != "/data/presplash.png" and "s/Images/presplash." in presplash_field:
+        added_once[1] = True
     for i in os.listdir(f"{path}/Images"):
         if i[:5] == "icon." and not added_once[0]:
-            if icon_field[-14:] != "/data/icon.png" and f"s/Images/{i}" in icon_field:
-                added_once[0] = True
-                continue
             attribute = "%(source.dir)s/" + "Images/" + i
             buildozer_conf.add_to("icon.filename", attribute, True)
             head_print(f"{i} image added.")
             added_once[0] = True
         elif i[:10] == "presplash." and not added_once[1]:
-            if presplash_field[-19:] != "/data/presplash.png" and f"s/Images/{i}" in presplash_field:
-                added_once[1] = True
-                continue
             attribute = "%(source.dir)s/" + "Images/" + i
             buildozer_conf.add_to("presplash.filename", attribute, True)
             head_print(f"{i} image added.")
@@ -189,7 +232,7 @@ def run_project(path):
         "2": "buildozer android deploy run logcat",
         "3": "buildozer android clean",
         "4": "python3 main.py"
-                    }
+    }
     while True:
         request = quest_input("choose option: \t(Like: 1,2)\n1>> Build the application in debug mode."
                               "\n2>> Deploy and Run the application on the device. (device must be connected)"
@@ -197,7 +240,7 @@ def run_project(path):
                               "\n4>> Run main.py on your PC"
                               "\n: ")
         request = (request.replace(" ", "")).split(",")
-        request = sorted(set([x for x in request if (x.isdigit() and 0<int(x)<5)]), key=request.index)
+        request = sorted(set([x for x in request if (x.isdigit() and 0 < int(x) < 5)]), key=request.index)
         ask = quest_input(f"Continue with {request}? [y/n]:")
         if ask in ["Y", "y", "yes", "Yes"] and request:
             break
