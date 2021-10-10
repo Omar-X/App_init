@@ -41,7 +41,7 @@ class Buildozer_init:
         elif not one_value:
             field_line = field_line[:equal_sign + 1] + attributes + "," + field_line[equal_sign + 1:]
         else:
-            field_line = field_line[:equal_sign + 1] + attributes
+            field_line = field_line[:equal_sign + 1] + attributes + "\n"
         spec_lines[field_line_nu] = field_line
         open(f"{self.path}/buildozer.spec", "w").writelines(spec_lines)
 
